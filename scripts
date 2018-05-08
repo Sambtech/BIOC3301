@@ -1,0 +1,45 @@
+# BIOC3301
+
+Command use to obtain OTUs
+
+#!/bin/bash
+#SBATCH -t 1:00:00
+#SBATCH -n 24
+#SBATCH -p short
+#Load modules to run python
+module load eb
+module load Miniconda2
+source deactivate
+# loading virtualenv
+echo "loading virtualenv"
+source activate qiime1
+#setting temporary directory
+export TMPDIR=~/qiime_tmp
+#Picking OTUs
+echo "Picking OTUs"
+pick_closed_reference_otus.py -i ~/2018_02_smb/splitlibrariesseqprep/seqs.fna -o otus2nd -O 16 -a -t
+source deactivate
+
+
+
+Command use to obtain diversity analysis
+
+#!/bin/bash
+#SBATCH -t 2:00:00
+#SBATCH -n 24
+#SBATCH -p medium
+#Load modules to run python
+module load eb
+module load Miniconda2
+source deactivate
+# loading virtualenv
+echo "loading virtualenv"
+source activate qiime1
+#setting temporary directory
+export TMPDIR=~/qiime_tmp
+# Core divesity analysis
+echo "Core diversity analysis"
+time core_diversity_analyses.py -i ~/2018_02_smb/otus2nd/otu_table.biom -o ~/2018_02_smb/cdagreengene2nd -m ~/2018_02_smb/map_incomplete.tsv -e 600 -a -O 24 -t ~/2018_02_smb/otus2nd/97_otus.tree # the sampling depth, samples with less sequences will be excluded
+source deactivate
+
+Note that some commands were run multiple times until complete expected outputs were obtained.
